@@ -129,6 +129,7 @@ class MarineCargoInsuraceController extends Controller
 
                 $marinInsurance = MarineCargoInsurance::create($input);
                 $account = $marinInsurance->accountInfoMarinInsurance()->create($input);
+                $marinInsurance->insurances()->create(['type' => 'Marine']);
                 if (!empty($request->addmore)) {
                     foreach ($request->addmore as $value) {
                         $perils = $marinInsurance->marineAdditionalPerilsDetail()->create($value);
@@ -230,6 +231,7 @@ class MarineCargoInsuraceController extends Controller
         // Gate::authorize('app.MarineCargoInsurance.destroy');
         $data = MarineCargoInsurance::findOrFail($id);
         AccountInformationMarinInsurance::where('marine_cargo_insurance_id',$id)->delete();
+        $data->insurances()->delete();
         $action = $data->delete();
 
         if($action){

@@ -96,8 +96,7 @@
                 extend: 'print',
                 title:"",
                 messageTop: function () {
-                  var top = '<center><p class ="text-center"><img src="{{asset("logo")}}/logo.png" width="40px" height="40px"/></p></center>';
-                  top += '<center><h3>PPPO</h3></center>';
+                  var top = '<center><p class ="text-center"><img src="{{asset("upload/logo/")}}/header.png" height="60px"/></p></center>';
                   
                   return top;
                 },

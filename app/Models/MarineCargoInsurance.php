@@ -83,6 +83,10 @@ class MarineCargoInsurance extends Model
     {
         return $this->hasOne(AccountInformationMarinInsurance::class);
     }
+    public function accountInfo()
+    {
+        return $this->hasOne(AccountInformationMarinInsurance::class);
+    }
 
     //------------------- create marine perils table -------------------//
     public function marineAdditionalPerilsDetail()
@@ -90,6 +94,10 @@ class MarineCargoInsurance extends Model
         return $this->hasMany(MarineAdditionalPerilsDetail::class);
     }
 
+    // morph
+    public function insurances(){
+        return $this->morphOne(Insurance::class, 'insuranceable');
+    }
 
     // scop
 

@@ -69,6 +69,32 @@
                   <div class="field-placeholder">Address <span class="text-danger">*</span></div>
                 </div>
                 <!-- Field wrapper end -->
+                 <!-- Field wrapper start -->
+                 <div class="field-wrapper">
+                  <div class="input-group">
+                    <select name="life_stage" class="select2 form-control @error('life_stage') is-invalid @enderror">
+                    <option value="">Select</option>
+                    @foreach ($lifeStages as $key => $lifeStage)
+                    <option value="{{$key}}" {{(!empty($single_data->life_stage) && ($key == $single_data->life_stage))?'selected':''}}>{{$lifeStage}}</option>
+                    @endforeach
+                    </select>
+                  </div>
+                  <div class="field-placeholder">Life Stage <span class="text-danger">*</span></div>
+                </div>
+                <!-- Field wrapper end -->
+                 <!-- Field wrapper start -->
+                 <div class="field-wrapper">
+                  <div class="input-group">
+                    <select name="owner" class="select2 form-control @error('owner') is-invalid @enderror">
+                    <option value="">Select</option>
+                    @foreach ($owners as $owner)
+                    <option value="{{$owner->id}}" {{(!empty($single_data->owner) && ($owner->id == $single_data->owner))?'selected':''}}>{{$owner->name}}</option>
+                    @endforeach
+                    </select>
+                  </div>
+                  <div class="field-placeholder">Owner<span class="text-danger">*</span></div>
+                </div>
+                <!-- Field wrapper end -->
               </div>
             </div>
             <!-- Row end -->

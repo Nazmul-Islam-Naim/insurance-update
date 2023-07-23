@@ -33,6 +33,7 @@
                     <th>E-mail</th>
                     <th>Address</th>
                     <th>Branch</th>
+                    <th>Life Stage</th>
                     <th>Agent</th>
                     <th>{{ __('home.action') }}</th>
                   </tr>
@@ -132,7 +133,10 @@
           data: 'branch.name',
         },
 				{
-          data: 'user.name',
+          data: 'lifeStage',
+        },
+				{
+          data: 'owner.name',
         },
 				{
           data: 'action',

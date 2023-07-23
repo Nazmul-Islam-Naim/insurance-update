@@ -31,6 +31,11 @@
                         <tbody>
                           <tr>
                             <td style="border: 1px solid #ddd; padding: 3px 3px; font-size:18px; text-align:center; white-space:unset; " colspan="10">
+                              <img src="{{asset('upload/logo/header.png')}}" height="60px" alt="" srcset="">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="border: 1px solid #ddd; padding: 3px 3px; font-size:18px; text-align:center; white-space:unset; " colspan="10">
                               As per Insurance Developement Regulatory Authority (IDRA) rule,
                               before insurance of policy insurance premium is required to be received.
                             </td>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class OtherPaymentVoucher extends Model
 {
@@ -29,5 +30,14 @@ class OtherPaymentVoucher extends Model
     public function otherpayment_user_object()
     {
         return $this->hasOne('App\Models\User', 'id', 'created_by');
+    }
+    // scop
+
+    public static function scopeCheckBranch($query)
+    {
+        $getUser = Auth::user();
+        if ($getUser->role->slug != 'admin') {
+            $query->where('branch_id', $getUser->branch_id);
+        }
     }
 }

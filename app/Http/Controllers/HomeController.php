@@ -38,7 +38,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index1()
     {
         $data['marine'] = MarineCargoInsurance::where('branch_id',Auth::user()->branch_id)->count();
         $data['motor'] = MotorInsurance::where('branch_id',Auth::user()->branch_id)->count();
@@ -57,20 +57,20 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index2()
+    public function index3()
     {
         // dialy, monthly, yearly and total daily work calculation
-        $data['fireDailyAmount'] = AccountInfoFireInsurance::where('branch_id',Auth::user()->branch_id)->whereDate('created_at',Carbon::now())->sum('grand_total');
-        $data['fireMonthlyAmount'] = AccountInfoFireInsurance::where('branch_id',Auth::user()->branch_id)->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
-        $data['fireYearlyAmount'] = AccountInfoFireInsurance::where('branch_id',Auth::user()->branch_id)->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        $data['fireDailyAmount'] = AccountInfoFireInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total');
+        $data['fireMonthlyAmount'] = AccountInfoFireInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['fireYearlyAmount'] = AccountInfoFireInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
         
-        $data['marineDailyAmount'] = AccountInformationMarinInsurance::where('branch_id',Auth::user()->branch_id)->whereDate('created_at',Carbon::now())->sum('grand_total');
-        $data['marineMonthlyAmount'] = AccountInformationMarinInsurance::where('branch_id',Auth::user()->branch_id)->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
-        $data['marineYearlyAmount'] = AccountInformationMarinInsurance::where('branch_id',Auth::user()->branch_id)->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        $data['marineDailyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total');
+        $data['marineMonthlyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['marineYearlyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
         
-        $data['motorDailyAmount'] = AccountInfoMotorInsurance::where('branch_id',Auth::user()->branch_id)->whereDate('created_at',Carbon::now())->sum('grand_total');
-        $data['motorMonthlyAmount'] = AccountInfoMotorInsurance::where('branch_id',Auth::user()->branch_id)->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
-        $data['motorYearlyAmount'] = AccountInfoMotorInsurance::where('branch_id',Auth::user()->branch_id)->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        $data['motorDailyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total');
+        $data['motorMonthlyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['motorYearlyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
         
         $data['totalDaily'] = $data['fireDailyAmount'] + $data['marineDailyAmount'] + $data['motorDailyAmount'];
         $data['totalMonthly'] = $data['fireMonthlyAmount'] + $data['marineMonthlyAmount'] + $data['motorMonthlyAmount'];
@@ -114,6 +114,94 @@ class HomeController extends Controller
         $data['totalYearlyBalance'] = ($data['yearlyReceive'] + $data['totalYearlyCollection']) - $data['yearlyPayment'];
         
         return view('dashboard',$data);
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index(){
+        $data['fire'] = $this->fire();
+        $data['marine'] = $this->marine();
+        $data['motor'] = $this->motor();
+        $data['totalWork'] = $this->totalWrok();
+        $data['paymentRCV'] = $this->paymnetRCV();
+        $data['dueWork'] = $this->dueWrok();
+        $data['cashRCV'] = $this->cashRCV();
+        $data['cashPayment'] = $this->cashPayment();
+        $data['lastBalance'] = $this->lastBalance();
+
+        return view('dashboard',$data);
+    }
+
+    // fire daily, monthly, yearly 
+    public function fire(){
+        $data['fireDailyCount'] = AccountInfoFireInsurance::checkBranch()->whereDate('created_at',Carbon::now())->count();
+
+        $data['fireDailyAmount'] = AccountInfoFireInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total');
+        $data['fireMonthlyAmount'] = AccountInfoFireInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['fireYearlyAmount'] = AccountInfoFireInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        return $data;
+    }
+
+    // marine daily, monthly, yearly 
+    public function marine(){
+        $data['marineDailyCount'] = AccountInformationMarinInsurance::checkBranch()->whereDate('created_at',Carbon::now())->count(); 
+
+        $data['marineDailyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total'); 
+        $data['marineMonthlyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['marineYearlyAmount'] = AccountInformationMarinInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        return $data;
+    }
+
+    // motor daily, monthly, yearly 
+    public function motor(){
+        $data['motorDailyCount'] = AccountInfoMotorInsurance::checkBranch()->whereDate('created_at',Carbon::now())->count();
+
+        $data['motorDailyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereDate('created_at',Carbon::now())->sum('grand_total');
+        $data['motorMonthlyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereMonth('created_at',Carbon::now()->month)->sum('grand_total');
+        $data['motorYearlyAmount'] = AccountInfoMotorInsurance::checkBranch()->whereYear('created_at',Carbon::now()->year)->sum('grand_total');
+        return $data;
+    }
+
+    // total work
+    public function totalWrok(){
+        $fireTotalWork = AccountInfoFireInsurance::checkBranch()->sum('grand_total');
+        $marineTotalWork = AccountInformationMarinInsurance::checkBranch()->sum('grand_total');
+        $motorTotalWork = AccountInfoMotorInsurance::checkBranch()->sum('grand_total');
+
+        return $fireTotalWork + $marineTotalWork + $motorTotalWork;
+    }
+
+    // total payment receive
+    public function paymnetRCV(){
+         $data['fireDailyCollection'] = BillCollectionFire::checkBranch()->sum('amount');
+         $data['marineDailyCollection'] = BillCollectionMarinInsurance::checkBranch()->sum('amount');
+         $data['motorDailyCollection'] = BillCollectionMotor::checkBranch()->sum('amount');
+
+         return $data['fireDailyCollection'] + $data['marineDailyCollection'] + $data['motorDailyCollection'];
+    }
+
+    // total due work
+    public function dueWrok(){
+        return $this->totalWrok() - $this->paymnetRCV();
+    }
+
+    // cash receive (others receive)
+    public function cashRCV(){
+        $cashRCV = OtherReceiveVoucher::checkBranch()->sum('amount');
+        return $cashRCV;
+    }
+
+    // cash payment (others payment)
+    public function cashPayment(){
+        $cashPayment = OtherPaymentVoucher::checkBranch()->sum('amount');
+        return $cashPayment;
+    }
+    // last balance (others payment)
+    public function lastBalance(){
+        return $this->cashRCV() - $this->cashPayment();
     }
 
     public function selectBranch()

@@ -53,11 +53,20 @@ class MotorInsurance extends Model
     {
         return $this->hasOne(AccountInfoMotorInsurance::class);
     }
+    public function accountInfo()
+    {
+        return $this->hasOne(AccountInfoMotorInsurance::class);
+    }
 
     //------------------- create fire perils table -------------------//
     public function motorAdditionalPerilsDetail()
     {
         return $this->hasMany(MotorAdditionalPerilsDetail::class);
+    }
+
+    // morph
+    public function insurances(){
+        return $this->morphOne(Insurance::class, 'insuranceable');
     }
 
     // scop

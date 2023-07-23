@@ -179,7 +179,8 @@
                                     $url=='home' || 
                                     $url==config('app.account').'/daily-transaction' ||
                                     $url==config('app.or').'/receive-voucher-report' ||
-                                    $url==config('app.op').'/payment-voucher-report') ? 'active':''}}">
+                                    $url==config('app.op').'/payment-voucher-report' ||
+                                    $url==config('app.utility').'/crm') ? 'active':''}}">
                                     <a href="javascript::void(0)">
                                         <i class="icon-home2"></i>
                                         <span class="menu-text">{{ __('menu.dashboard') }}</span>
@@ -197,6 +198,9 @@
                                             </li>
                                             <li>
                                                 <a href="{{$baseUrl.'/'.config('app.op').'/payment-voucher-report'}}" class="{{($url==config('app.op').'/payment-voucher-report') ? 'current-page':''}}">Payment Report</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{$baseUrl.'/'.config('app.utility').'/crm'}}" class="{{($url==config('app.utility').'/crm') ? 'current-page':''}}">CRM</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -271,7 +275,8 @@
                                     $url==config('app.utility').'/motor-certificate-type' || $url==config('app.utility').'/motor-certificate-type/create' || $url==(request()->is(config('app.utility').'/motor-certificate-type/*/edit')) ||
                                     $url==config('app.utility').'/type-of-certificate' || $url==config('app.utility').'/type-of-certificate/create' || $url==(request()->is(config('app.utility').'/type-of-certificate/*/edit')) ||
                                     $url==config('app.utility').'/tarrif-type' || $url==config('app.utility').'/tarrif-type/create' || $url==(request()->is(config('app.utility').'/tarrif-type/*/edit')) ||
-                                    $url==config('app.utility').'/tarrif-calculation' || $url==config('app.utility').'/tarrif-calculation/create' || $url==(request()->is(config('app.utility').'/tarrif-calculation/*/edit'))) ? 'active':''}}">
+                                    $url==config('app.utility').'/tarrif-calculation' || $url==config('app.utility').'/tarrif-calculation/create' || $url==(request()->is(config('app.utility').'/tarrif-calculation/*/edit')) ||
+                                    $url==config('app.utility').'/insuranceRates' || $url==config('app.utility').'/insuranceRates/create' || $url==(request()->is(config('app.utility').'/insuranceRates/*/edit'))) ? 'active':''}}">
                                     <a href="javascript::void(0)">
                                         <i class="icon-box"></i>
                                         <span class="menu-text">Insurance Utility</span>
@@ -313,6 +318,9 @@
                                             </li>
                                             <li>
                                                 <a href="{{$baseUrl.'/'.config('app.utility').'/tarrif-calculation'}}" class="{{($url==config('app.utility').'/tarrif-calculation' || $url==config('app.utility').'/tarrif-calculation/create' || $url==(request()->is(config('app.utility').'/tarrif-calculation/*/edit'))) ? 'current-page':''}}">Tarrif Calculation</a>
+                                            </li>
+                                            <li>
+                                                <a href="{{$baseUrl.'/'.config('app.utility').'/insuranceRates'}}" class="{{($url==config('app.utility').'/insuranceRates' || $url==config('app.utility').'/insuranceRates/create' || $url==(request()->is(config('app.utility').'/insuranceRates/*/edit'))) ? 'current-page':''}}">Insurance Rate</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -679,10 +687,10 @@
                 var reportTablePrint=document.getElementById("printTable");
                 newWin= window.open();
                 var is_chrome = Boolean(newWin.chrome);
-                // var top = '<center><img src="{{URL::to("logo/logo.png")}}" width="40px" height="40px"></center>';
+                var top = '<center><img src="{{asset("upload/logo/header.png")}}" height="60px"></center>';
                 //   top += '<center><h3>Baby Land Park</h3></center>';
                 //   top += '<center><p style="margin-top:-10px">Address</p></center>';
-                // newWin.document.write(top);
+                newWin.document.write(top);
                 newWin.document.write(reportTablePrint.innerHTML);
                 if (is_chrome) {
                     setTimeout(function () { // wait until all resources loaded 

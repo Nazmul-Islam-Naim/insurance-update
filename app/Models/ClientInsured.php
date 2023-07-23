@@ -15,9 +15,17 @@ class ClientInsured extends Model
         'phone',
         'email',
         'address',
+        'life_stage',
+        'owner',
         'branch_id',
         'created_by'
     ];
+
+    //---------------------- owner ---------------//
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner');
+    }
 
     //---------------------- branch ---------------//
     public function branch()
@@ -25,7 +33,7 @@ class ClientInsured extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    //---------------------- branch ---------------//
+    //---------------------- created by ---------------//
     public function user()
     {
         return $this->hasOne('App\Models\User','id','created_by');

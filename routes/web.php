@@ -25,7 +25,8 @@ Route::get('/map', function () {
 Auth::routes();
 Route::group(['middleware'=>['auth']],function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/home2', [App\Http\Controllers\HomeController::class, 'index2'])->name('home2');
+    // Route::get('/home2', [App\Http\Controllers\HomeController::class, 'index2'])->name('home2');
+    Route::get('/due-work', [App\Http\Controllers\DashboardController::class, 'dueWork'])->name('due-work');
 
     //****** Accounts ***********//
     Route::prefix(config('app.account'))->group(function () {
@@ -57,7 +58,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('receive-type', 'App\Http\Controllers\ReceiveTypeController');
         Route::resource('receive-sub-type', 'App\Http\Controllers\ReceiveSubTypeController');
         Route::resource('receive-voucher', 'App\Http\Controllers\ReceiveVoucherController');
-        Route::get('receive-voucher-report', 'App\Http\Controllers\ReceiveVoucherController@report');
+        Route::get('receive-voucher-report', 'App\Http\Controllers\ReceiveVoucherController@report')->name('receive-voucher-report');
         Route::post('receive-voucher-report', 'App\Http\Controllers\ReceiveVoucherController@filter')->name('receive.filter');
         Route::post('find-receive-subtype-with-type-id', 'App\Http\Controllers\ReceiveVoucherController@findReceiveSubTypeWithType');
     });
@@ -67,7 +68,7 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('payment-type', 'App\Http\Controllers\PaymentTypeController');
         Route::resource('payment-sub-type', 'App\Http\Controllers\PaymentSubTypeController');
         Route::resource('payment-voucher', 'App\Http\Controllers\PaymentVoucherController');
-        Route::get('payment-voucher-report', 'App\Http\Controllers\PaymentVoucherController@report');
+        Route::get('payment-voucher-report', 'App\Http\Controllers\PaymentVoucherController@report')->name('payment-voucher-report');
         Route::post('payment-voucher-report', 'App\Http\Controllers\PaymentVoucherController@filter')->name('payment.filter');
         Route::post('find-payment-subtype-with-type-id', 'App\Http\Controllers\PaymentVoucherController@findPaymentSubTypeWithType');
     });
@@ -86,9 +87,14 @@ Route::group(['middleware'=>['auth']],function(){
         Route::resource('type-of-certificate', 'App\Http\Controllers\Utility\TypeOfCertificateController');
         Route::resource('tarrif-type', 'App\Http\Controllers\Utility\TarrifTypeController');
         Route::resource('tarrif-calculation', 'App\Http\Controllers\Utility\TarrifCalculationController');
+        Route::resource('insuranceRates', 'App\Http\Controllers\InsuranceRateController');
+
+        Route::get('crm', 'App\Http\Controllers\DashboardController@crm')->name('crm');
+        Route::get('clients/{lifeStage?}', 'App\Http\Controllers\DashboardController@clients')->name('clients');
 
         //------------------------- ajax call --------------------//
         Route::post('take-stamp-amount', 'App\Http\Controllers\Utility\TransitByController@takeStampAmount')->name('take-stamp-amount');
+        Route::get('lifeStage', 'App\Http\Controllers\DashboardController@lifeStage')->name('lifeStage');
 
     });
 

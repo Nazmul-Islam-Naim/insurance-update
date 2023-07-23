@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Utility;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Custom\MessageController;
 use App\Models\ClientInsured;
+use App\Enum\LifeStage;
 use DataTables;
 use Validator;
 use Response;
@@ -25,9 +27,12 @@ class ClientInsuredController extends Controller
     {
         // Gate::authorize('app.ClientInsured.index');
         if ($request->ajax()) {
-            $alldata= ClientInsured::checkBranch()->with('branch','user')->get();
+            $alldata= ClientInsured::checkBranch()->with('branch','user','owner')->get();
             return DataTables::of($alldata)
             ->addIndexColumn()
+            ->addColumn('lifeStage', function($row){
+                return LifeStage::getFromValue($row->life_stage)->toString();
+            })
             ->addColumn('action', function ($row) {
                 ob_start() ?>
 
@@ -53,6 +58,8 @@ class ClientInsuredController extends Controller
      */
     public function create()
     {
+        $data['lifeStages'] = LifeStage::getEnum();
+        $data['owners'] = User::all();
         $data['alldata']= ClientInsured::orderBy('id', 'DESC')->get();
         return view('utility.client.create-edit-form', $data);
     }
@@ -71,6 +78,8 @@ class ClientInsuredController extends Controller
             'phone' => 'required|string|max:255',
             'email' => 'nullable|max:255',
             'address' => 'required',
+            'life_stage' => 'required',
+            'owner' => 'required',
         ]);
 
         $input = $request->all();
@@ -109,6 +118,8 @@ class ClientInsuredController extends Controller
     public function edit($id)
     {
         // Gate::authorize('app.ClientInsured.edit');
+        $data['lifeStages'] = LifeStage::getEnum();
+        $data['owners'] = User::all();
         $data['single_data']= ClientInsured::find($id);
         return view('utility.client.create-edit-form', $data);
     }
@@ -132,6 +143,8 @@ class ClientInsuredController extends Controller
             'phone' => 'required|string|max:255',
             'email' => 'nullable|max:255',
             'address' => 'required',
+            'life_stage' => 'required',
+            'owner' => 'required',
         ]);
               
         $input = $request->all();

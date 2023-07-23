@@ -110,6 +110,7 @@ class MotorInsuranceController extends Controller
 
                 $motorInsurance = MotorInsurance::create($input);
                 $account = $motorInsurance->accountInfoMotorInsurance()->create($input);
+                $motorInsurance->insurances()->create(['type' => 'Motor']);
                 if (!empty($request->addmore)) {
                     foreach ($request->addmore as $value) {
                         $perils = $motorInsurance->motorAdditionalPerilsDetail()->create($value);
@@ -211,6 +212,7 @@ class MotorInsuranceController extends Controller
     {
         // Gate::authorize('app.MarineCargoInsurance.destroy');
         $data = MotorInsurance::findOrFail($id);
+        $data->insurances()->delete();
         $action = $data->delete();
 
         if($action){

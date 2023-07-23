@@ -107,6 +107,7 @@ class FireInsuranceController extends Controller
 
                 $fireInsurace = FireInsurance::create($input);
                 $account = $fireInsurace->accountInfoFireInsurance()->create($input);
+                $fireInsurace->insurances()->create(['type' => 'Fire']);
                 if (!empty($request->addproduct)) {
                     foreach ($request->addproduct as $value) {
                         $products = $fireInsurace->fireInsuranceProductDetail()->create($value);
@@ -213,6 +214,7 @@ class FireInsuranceController extends Controller
     {
         // Gate::authorize('app.MarineCargoInsurance.destroy');
         $data = FireInsurance::findOrFail($id);
+        $data->insurances()->delete();
         $action = $data->delete();
 
         if($action){

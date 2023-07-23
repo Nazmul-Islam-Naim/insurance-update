@@ -18,8 +18,7 @@
       <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Marine Cargo Insurance List</div>
-            <a href="{{route('marine-cargo-insurance.create')}}" class="btn btn-sm btn-primary"><i class="icon-plus-circle"></i>Add Insurance</a>
+            <div class="card-title">Insurance Due List</div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -28,17 +27,10 @@
                 <thead>
                   <tr>
                     <th>{{ __('home.SL') }}</th>
-                    <th>Date</th>
-                    <th>Code</th>
                     <th>Client Name</th>
-                    <th>Bank Name</th>
-                    <th>Amount</th>
-                    <th>Taka</th>
-                    <th>Net Premium</th>
-                    <th>Vat (15%)</th>
-                    <th>Stamp</th>
-                    <th>Total</th>
-                    <th>Action</th>
+                    <th>Insurance Type</th>
+                    <th>Insurance Code</th>
+                    <th>Due</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -80,7 +72,7 @@
 			serverSide: true,
 			processing: true,
       deferRender : true,
-			ajax: "{{route('marine-cargo-insurance.index')}}",
+			ajax: "{{route('due-work')}}",
       "lengthMenu": [[ 100, 150, 250, -1 ],[ '100', '150', '250', 'All' ]],
       dom: 'Blfrtip',
         buttons: [
@@ -88,7 +80,7 @@
             {
                 extend: 'excel',
                 exportOptions: {
-                    columns: [  0, 1, 2, 3,4,5,6,7,8,9,10]
+                    columns: [  0, 1, 2, 3,4]
                 },
                 messageTop: 'The information in this table is copyright to Sirius Cybernetics Corp.'
             },
@@ -96,7 +88,8 @@
                 extend: 'print',
                 title:"",
                 messageTop: function () {
-                  var top = '<center><p class ="text-center"><img src="{{asset("upload/logo/")}}/header.png" height="60px"/></p></center>';
+                  var top = '<center><p class ="text-center"><img src="{{asset("logo")}}/logo.png" width="40px" height="40px"/></p></center>';
+                  top += '<center><h3>PPPO</h3></center>';
                   
                   return top;
                 },
@@ -111,7 +104,7 @@
                 $(win.document.body).css("height", "auto").css("min-height", "0");
                 },
                 exportOptions: {
-                    columns: [  0, 1, 2, 3,4,5,6,7,8,9,10]
+                    columns: [  0, 1, 2, 3,4]
                 },
                 messageBottom: null
             }
@@ -123,81 +116,18 @@
           data: 'DT_RowIndex',
         },
 				{
-          data: 'period_from',
-          render: function(data, display, row) {
-						if (data != null) {
-							return dateFormat(new Date(data)).toString();
-						}
-					}
+          data: 'insuranceable.client.name',
         },
         {
-          data: 'insurance_code',
-          render:function(data, display, row){
-            var url = '{{route("marine-invoice",":id")}}';
-            var url = url.replace(':id', row.id);
-            return '<a href=' + url +'>'+ data +'</a>';
-          }
+          data: 'type',
         },
 				{
-          data: 'client.name',
+          data: 'insuranceable.insurance_code',
         },
 				{
-          data: 'bank.name',
-          render:function(data, display, row){
-            return data + ' (' + row.bank.branch + ')';
-          }
-        },
-				{
-          data: 'account_info_marin_insurance.amount_in_dollar',
-          render:function(data, display, row){
-            return data + ' (' + row.currency.name + ')';
-          }
-        },
-				{
-          data: 'account_info_marin_insurance.amount_in_bdt',
-        },
-				{
-          data: 'account_info_marin_insurance.net_premium',
-        },
-				{
-          data: 'account_info_marin_insurance.vat_amount',
-        },
-				{
-          data: 'account_info_marin_insurance.stamp_duty',
-        },
-				{
-          data: 'account_info_marin_insurance.grand_total',
-        },
-        	{
-          data: 'action',
+          data: 'insuranceable.account_info.due',
         },
 			]
-    });
-     //-------- Delete single data with Ajax --------------//
-     $("#example").on("click", ".button-delete", function(e) {
-			e.preventDefault();
-
-			var confirm = window.confirm('Are you sure want to delete data?');
-			if (confirm != true) {
-				return false;
-			}
-			var id = $(this).data('id');
-			var url = '{{route("marine-cargo-insurance.destroy",":id")}}';
-			var url = url.replace(':id', id);
-			var token = '{{csrf_token()}}';
-			$.ajax({
-				url: url,
-				type: 'POST',
-				data: {
-					'_method': 'DELETE',
-					'_token': token
-				},
-				success: function(data) {
-					table.ajax.reload();
-					console.log('success');
-				},
-
-			});
     });
 });
 </script>

@@ -44,6 +44,10 @@ class FireInsurance extends Model
     {
         return $this->hasOne(AccountInfoFireInsurance::class);
     }
+    public function accountInfo()
+    {
+        return $this->hasOne(AccountInfoFireInsurance::class);
+    }
 
     //------------------- create fire perils table -------------------//
     public function fireAdditionalPerilsDetail()
@@ -57,6 +61,10 @@ class FireInsurance extends Model
         return $this->hasMany(FireInsuranceProductDetail::class);
     }
 
+    // morph
+    public function insurances(){
+        return $this->morphOne(Insurance::class, 'insuranceable');
+    }
 
 
     // scop
