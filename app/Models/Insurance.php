@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Insurance extends Model
 {
     use HasFactory;
+    protected $fillable = ['type'];
     /**
      * Get all of the owning insuranceable models.
      */
